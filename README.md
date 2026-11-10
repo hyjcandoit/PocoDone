@@ -1,4 +1,12 @@
-# Notion Daily · Weekly · Monthly Planner — v2.1
+# PocoDone
+
+**Make starting easy. Make progress fun.**
+
+### AI-Assisted Planning & Workflow Automation
+
+**Current Version:** v2.1.0
+
+*Formerly: Notion Daily · Weekly · Monthly Planner*
 
 A reusable **AI Agent Skill** for managing daily execution, weekly priorities, monthly progress, linked subtasks, overdue carryover, and reviews **inside one Notion task database**.
 
