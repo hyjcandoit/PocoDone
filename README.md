@@ -2,7 +2,7 @@
 
 **Make starting easy. Make progress fun.**
 
-### AI-Assisted Planning & Workflow Automation
+### AI-Assisted Planning & Workflow Automation with Notion
 
 **Current Version:** v2.1.0
 
