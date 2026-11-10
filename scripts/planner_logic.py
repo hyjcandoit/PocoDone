@@ -97,3 +97,56 @@ def unique_step_key(parent_id: str, title: str, deadline: Optional[date]) -> tup
     """Normalize a potential child step before deduplicating within a verified parent."""
     canonical_title = " ".join(title.casefold().strip().split())
     return (parent_id.strip(), canonical_title, deadline.isoformat() if deadline else "")
+
+
+def is_auto_split_candidate(
+    title: str,
+    task_type: str | None,
+    split_state: str | None,
+    status: str,
+    template_marker: str = "【模板样板】",
+) -> bool:
+    """Select real pending large tasks for optional scheduled AI splitting.
+
+    This function only makes a local decision; it never writes to Notion.
+    Templates are excluded even if an example is configured as pending.
+    """
+    return (
+        task_type == "大型任务"
+        and split_state == "待拆分"
+        and status != COMPLETE
+        and template_marker not in title
+    )
+
+
+def steps_to_create(
+    parent_id: str,
+    planned: list[tuple[str, date | None]],
+    existing: list[tuple[str, date | None]],
+) -> list[tuple[str, date | None]]:
+    """Pure function: list missing child steps, without duplicating an existing key.
+
+    Matching titles and dates is one conservative guard. A live Notion worker
+    MUST ALSO re-read two-way Relations, scope, and deliverable descriptions.
+    """
+    current = {unique_step_key(parent_id, title, when) for title, when in existing}
+    missing = []
+    for title, when in planned:
+        key = unique_step_key(parent_id, title, when)
+        if key not in current:
+            missing.append((title, when))
+            current.add(key)
+    return missing
+
+
+def may_mark_split_done(
+    parent_id: str,
+    planned: list[tuple[str, date | None]],
+    verified_children: list[tuple[str, date | None]],
+) -> bool:
+    """Mark split done only after every intended step has verified child evidence.
+
+    This static comparison is necessary but not sufficient: the caller must
+    confirm the actual parent/child Notion relation IDs before modifying a row.
+    """
+    return bool(planned) and not steps_to_create(parent_id, planned, verified_children)

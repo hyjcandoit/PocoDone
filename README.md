@@ -1,8 +1,8 @@
-# Notion Daily · Weekly · Monthly Planner — v2
+# Notion Daily · Weekly · Monthly Planner — v2.1
 
 A reusable **AI Agent Skill** for managing daily execution, weekly priorities, monthly progress, linked subtasks, overdue carryover, and reviews **inside one Notion task database**.
 
-**Version:** 2.0.0 · **Updated:** 2026-11-10 · **Language:** Chinese-first, with English repository documentation.
+**Version:** 2.1.0 · **Updated:** 2026-11-10 · **Language:** Chinese-first, with English repository documentation.
 
 > This repository is a reusable skill and implementation guide, **not a hosted app, background worker, or Notion template installer**. It requires your own Notion account and an assistant/integration with appropriate permissions. No private database IDs, credentials, or real user tasks are included.
 
@@ -19,7 +19,7 @@ A reusable **AI Agent Skill** for managing daily execution, weekly priorities, m
 | Weekly tasks include unfinished history | Manual rollover | **Scheduled/manual focus refresh design** |
 | Monthly carryover | Manual rollover | **Carryover logic and limitations documented** |
 | Simple / large task entry | Generic new task | **Copyable sample-page workflow** |
-| AI automatic splitting on creation | Not available | **Not enabled / future optional** |
+| AI automatic splitting | Not available | **Optional daily polling; live manual-run test passed in one workspace** |
 
 ## Architecture
 
@@ -51,7 +51,7 @@ A reusable **AI Agent Skill** for managing daily execution, weekly priorities, m
 - A weekly view filtered by `本周重点=true` relies on that checkbox being maintained; it is not automatically tied to Monday without a scheduler.
 - A monthly view filtered only by `进度追踪=true` contains **all tracked tasks**, not just this month. The Skill explains a more accurate month-scoped enhancement but does not claim it is installed.
 - The two sample pages are **copyable rows**, not necessarily native templates in Notion's `New ▼` dropdown.
-- **No automatic AI task splitting is activated in v2.**
+- **v2.1 includes an optional AI auto-split workflow.** The source Notion instance has a separately authorized scheduled checker enabled. Installing this repository **does not** enable a scheduled task in another account. Its initial **manual run** successfully created 2 child rows and linked them, but unattended 08:00 execution and retry/idempotency behavior are not yet end-to-end verified. See [test report](references/AI_SPLIT_TEST_REPORT.md).
 
 ## Repository layout
 
@@ -59,17 +59,28 @@ A reusable **AI Agent Skill** for managing daily execution, weekly priorities, m
 |---|---|
 | [`SKILL.md`](SKILL.md) | Main agent skill: triggers, safety, planning & execution |
 | [`QUICKSTART.zh-CN.md`](QUICKSTART.zh-CN.md) | Chinese setup and everyday usage |
-| [`references/`](references/) | Data schema, formulas, views, migration, overdue/automation behavior |
+| [`references/`](references/) | Data schema, formulas, views, migration, overdue/automation behavior; **AI split guide & anonymized live test report** |
 | [`examples/config.example.yaml`](examples/config.example.yaml) | Public placeholder config — create a private `config.local.yaml` |
-| [`examples/automation_prompt.example.md`](examples/automation_prompt.example.md) | Optional scheduled-review prompt |
+| [`examples/automation_prompt.example.md`](examples/automation_prompt.example.md) | Optional **scheduled review + AI auto-split** prompt |
 | [`notion_tasks_template.csv`](notion_tasks_template.csv) | Basic CSV template (backward compatible) |
-| [`notion_tasks_template_v2.csv`](notion_tasks_template_v2.csv) | Extended CSV example (does **not** create advanced Notion properties) |
+| [`notion_tasks_template_v2.csv`](notion_tasks_template_v2.csv) | Extended v2 CSV example (does **not** create advanced Notion properties) |
+| [`notion_tasks_template_v2_1.csv`](notion_tasks_template_v2_1.csv) | v2.1 CSV example including AI split state (**cannot create relations or scheduling**) |
 | [`scripts/planner_logic.py`](scripts/planner_logic.py) | Pure Python helper for offline date/rollover logic (no Notion API) |
 | [`scripts/validate_skill.py`](scripts/validate_skill.py) | Verify package structure and local documentation |
 | [`tests/`](tests/) | Offline tests for logic; no real Notion data involved |
 | [`CHANGELOG.md`](CHANGELOG.md) | Release notes and v1 → v2 delta |
 | [`references/GITHUB_RELEASE.md`](references/GITHUB_RELEASE.md) | Step-by-step upgrade of the existing GitHub repository |
 | [`LICENSE`](LICENSE) | MIT license preserved from v1 |
+
+## v2.1 changes: AI task auto-splitting
+
+- New `AI 拆分状态` Select field: `待拆分` / `已拆分` / `需确认` / `无需拆分`.
+- Large-task template defaults to pending; simple-task template defaults to no split. Template sample pages must be skipped by the checker.
+- An authorized daily scheduler can check at 08:00 (local timezone), create linked daily steps, verify relations, and then mark a parent as split. It is polling, **not an instant Notion-created webhook**.
+- A controlled immediate-run test passed for one sample parent and two linked daily children. All three test records were subsequently moved to Trash at the user's request.
+- Still untested: unattended scheduled run, repeat-run deduplication under live conditions, and 0%→50%→100% progress updates on live example data.
+
+See [AI split workflow](references/AI_SPLIT_AUTOMATION.md), [anonymized test report](references/AI_SPLIT_TEST_REPORT.md), and [CHANGELOG](CHANGELOG.md).
 
 ## Quick start
 
@@ -97,7 +108,7 @@ The data model uses Notion Status, Checkbox, Date, Formula, Rollup, and a **two-
 
 ## Original v1 repository & licensing
 
-This v2 pack builds on the original [`hyjcandoit/ai-notion-daily-weekly-monthly-planner`](https://github.com/hyjcandoit/ai-notion-daily-weekly-monthly-planner) repository and preserves its file naming and MIT License. It is prepared for the existing repository but **has not been pushed to GitHub automatically**.
+This v2.1 pack builds on the original [`hyjcandoit/ai-notion-daily-weekly-monthly-planner`](https://github.com/hyjcandoit/ai-notion-daily-weekly-monthly-planner) repository and preserves its file naming and MIT License. It is prepared for the existing repository but **has not been pushed to GitHub automatically**.
 
 ## Sample prompts
 

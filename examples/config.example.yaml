@@ -1,6 +1,6 @@
 # Copy to config.local.yaml, replace placeholders with YOUR OWN Notion workspace.
 # Never commit the local file or credentials to a public repository.
-version: '2.0.0'
+version: '2.1.0'
 notion:
   database_url: 'https://www.notion.so/YOUR_DATABASE_ID'
   data_source_id: 'YOUR_DATA_SOURCE_ID'
@@ -18,5 +18,11 @@ settings:
   simple_task_type: '简单任务'
   large_task_type: '大型任务'
   scheduled_review_enabled: false  # flip only AFTER creating an authorized scheduler
-  ai_auto_split_enabled: false      # intentionally NOT configured in v2
+  ai_auto_split_enabled: false      # set true ONLY after separately authorizing a scheduler with Notion write permission
+  ai_split_schedule: '08:00'         # user's local time, not an event/webhook trigger
+  ai_split_status_property: 'AI 拆分状态'
+  ai_split_pending_value: '待拆分'
+  ai_split_done_value: '已拆分'
+  ai_split_needs_review_value: '需确认'
+  ai_split_skip_template_prefix: '【模板样板】' 
   progress_scope: 'tracked_parents_not_strict_calendar_month'

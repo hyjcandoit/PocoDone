@@ -22,6 +22,9 @@ REQUIRED = [
     "references/AUTOMATION_AND_LIMITATIONS.md",
     "references/MIGRATION_V1_TO_V2.md",
     "references/GITHUB_RELEASE.md",
+    "references/AI_SPLIT_AUTOMATION.md",
+    "references/AI_SPLIT_TEST_REPORT.md",
+    "notion_tasks_template_v2_1.csv",
     "examples/config.example.yaml",
     "examples/automation_prompt.example.md",
     "scripts/planner_logic.py",
@@ -46,7 +49,7 @@ def main() -> int:
             if not re.search(rf"(?m)^{key}:\s*\S", front):
                 errors.append(f"SKILL.md frontmatter missing {key}")
 
-    for name in ["notion_tasks_template.csv", "notion_tasks_template_v2.csv"]:
+    for name in ["notion_tasks_template.csv", "notion_tasks_template_v2.csv", "notion_tasks_template_v2_1.csv"]:
         with (ROOT / name).open(encoding="utf-8-sig", newline="") as f:
             rows = list(csv.reader(f))
         if len(rows) < 2 or not {"任务", "分类", "日期", "状态"}.issubset(set(rows[0])):
@@ -69,7 +72,7 @@ def main() -> int:
             print("FAIL:", error)
         return 1
 
-    print(f"PASS: v2 package structure, frontmatter and CSV checked ({len(REQUIRED)} required files).")
+    print(f"PASS: v2.1 package structure, frontmatter and CSV checked ({len(REQUIRED)} required files).")
     print("NOTE: This does NOT validate your live Notion workspace or install templates/automations.")
     return 0
 
