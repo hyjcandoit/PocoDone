@@ -1,4 +1,4 @@
-# PocoDone
+# PocoDone — AI-Assisted Daily · Weekly · Monthly Planner for Notion
 
 **Make starting easy. Make progress fun.**
 
