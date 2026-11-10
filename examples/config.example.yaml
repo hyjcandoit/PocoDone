@@ -1,0 +1,22 @@
+# Copy to config.local.yaml, replace placeholders with YOUR OWN Notion workspace.
+# Never commit the local file or credentials to a public repository.
+version: '2.0.0'
+notion:
+  database_url: 'https://www.notion.so/YOUR_DATABASE_ID'
+  data_source_id: 'YOUR_DATA_SOURCE_ID'
+  views:
+    raw: 'YOUR_RAW_VIEW_ID'
+    daily: 'YOUR_DAILY_VIEW_ID'
+    weekly: 'YOUR_WEEKLY_VIEW_ID'
+    monthly: 'YOUR_MONTHLY_VIEW_ID'
+    overdue: 'YOUR_OVERDUE_VIEW_ID'
+settings:
+  timezone: 'America/New_York'  # replace with your local IANA timezone
+  week_starts_on: monday
+  completion_status: '已完成'
+  overdue_status: '逾期待办'
+  simple_task_type: '简单任务'
+  large_task_type: '大型任务'
+  scheduled_review_enabled: false  # flip only AFTER creating an authorized scheduler
+  ai_auto_split_enabled: false      # intentionally NOT configured in v2
+  progress_scope: 'tracked_parents_not_strict_calendar_month'

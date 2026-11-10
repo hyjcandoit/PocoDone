@@ -1,150 +1,116 @@
-# Notion Daily · Weekly · Monthly Planner
+# Notion Daily · Weekly · Monthly Planner — v2
 
-An AI-assisted, reusable planning skill for organizing **daily, weekly, and monthly plans in a single Notion task database**.
+A reusable **AI Agent Skill** for managing daily execution, weekly priorities, monthly progress, linked subtasks, overdue carryover, and reviews **inside one Notion task database**.
 
-It helps users structure goals, prioritize tasks, track progress, review completed work, and carry unfinished tasks into the next planning cycle.
+**Version:** 2.0.0 · **Updated:** 2026-11-10 · **Language:** Chinese-first, with English repository documentation.
 
-> **Status:** v0.1.0 — Initial public release. This project provides reusable AI skill instructions and a Notion CSV template, not a standalone application. The core skill instructions are currently written in Chinese.
+> This repository is a reusable skill and implementation guide, **not a hosted app, background worker, or Notion template installer**. It requires your own Notion account and an assistant/integration with appropriate permissions. No private database IDs, credentials, or real user tasks are included.
 
-## What It Does
+## What changed in v2
 
-- **Unified Planning:** Manage daily, weekly, and monthly plans in one Notion database.
-- **Goal Breakdown:** Turn monthly goals into weekly deliverables and daily actions.
-- **Task Prioritization:** Organize tasks using priority levels from P0 (critical) to P3 (optional).
-- **Progress Tracking:** Read actual Notion Status or Checkbox fields to identify completed and unfinished tasks.
-- **Weekly & Monthly Reviews:** Evaluate progress and identify what needs attention.
-- **Task Rollover:** Reschedule unfinished tasks without deleting historical records.
-- **Duplicate Prevention:** Help avoid creating repeated tasks when updating plans.
+| Capability | v1 | v2 |
+|---|---|---|
+| Single Notion database | ✓ | ✓ |
+| Daily / weekly / monthly planning | ✓ | ✓ |
+| Priorities, reviews, rollover | ✓ | ✓ |
+| Parent-child task relations | Guidance only | **Two-way Relation design** |
+| Progress percentage / text bars | Manual review | **Formula + Rollup specification** |
+| Red overdue status & alerts | Guidance only | **Status + formula + workflow** |
+| Weekly tasks include unfinished history | Manual rollover | **Scheduled/manual focus refresh design** |
+| Monthly carryover | Manual rollover | **Carryover logic and limitations documented** |
+| Simple / large task entry | Generic new task | **Copyable sample-page workflow** |
+| AI automatic splitting on creation | Not available | **Not enabled / future optional** |
 
-**Important:** This skill does not continuously monitor Notion or execute scheduled tasks on its own. An AI assistant needs authorized access to the user's Notion workspace. Recurring automatic reviews require a separate scheduling service.
-
-## Project Files
-
-| File | Description |
-|---|---|
-| [SKILL.md](SKILL.md) | Main reusable AI skill instructions |
-| [QUICKSTART.zh-CN.md](QUICKSTART.zh-CN.md) | Chinese setup guide and example prompts |
-| [notion_tasks_template.csv](notion_tasks_template.csv) | Reusable CSV template for a Notion task database |
-| [LICENSE](LICENSE) | MIT open-source license |
-
-All files are located in the repository's root directory.
-
-## Quick Start
-
-### 1. Get the Skill
-
-Download this repository or open [SKILL.md](SKILL.md).
-
-Copy the instructions into an AI assistant or agent that supports custom instructions or reusable skills, following that tool's setup process.
-
-### 2. Prepare Your Notion Database
-
-You can use an existing Notion task database or import the provided [Notion CSV template](notion_tasks_template.csv).
-
-The recommended database structure is:
-
-| Property | Purpose |
-|---|---|
-| Task | Task name and description |
-| Category | Daily Plan / Weekly Plan / Monthly Plan |
-| Date | Scheduled date or deadline |
-| Priority | P0 / P1 / P2 / P3 |
-| Status | Not Started / In Progress / Completed |
-| Project | Related goal or project |
-| Notes | Additional instructions or context |
-
-The included CSV template uses Chinese column names. Confirm the property types after importing it into Notion.
-
-### 3. Connect Your Notion Workspace
-
-If you want an AI assistant to read or update tasks directly, connect your own Notion account through a supported integration and grant the necessary permissions.
-
-Each user should connect their own workspace. This project does not include personal Notion data, credentials, or API keys.
-
-### 4. Start Planning
-
-Tell your AI assistant about your goals, deadlines, priorities, and available time.
-
-The assistant can use the skill to structure your daily, weekly, and monthly plans.
-
-### Example Prompt (Chinese)
+## Architecture
 
 ```text
-请使用 Notion Daily · Weekly · Monthly Planner Skill。
+                  One Notion database
+           ┌──────────────┴──────────────┐
+       Tracked parent                Daily child tasks
+     (weekly/monthly)            (Relation: 所属进度)
+           └───────── Daily steps ─────────┘
+                       │
+              Status: 已完成
+                       │
+              Formula: 步骤完成
+                       │
+          Rollup: 步骤完成率 / %
+                       │
+           Formula: 进度百分比
+                       │
+       Progress displayed in week/month
 
-根据我的目标、截止日期和可用时间，
-帮我建立每日、每周和本月计划。
-
-要求：
-1. 所有计划放在同一个 Notion 数据库中。
-2. 按照每日计划、每周计划、本月计划分类。
-3. 使用 P0–P3 设置优先级。
-4. 根据实际完成状态追踪任务。
-5. 保留历史记录，避免创建重复任务。
-6. 每周复盘未完成事项，并制定下周计划。
-7. 每月检查目标完成情况并调整下月计划。
+   Overdue status & weekly focus refresh:
+   requires user action or separate scheduler.
 ```
 
-## Planning Workflow
+**Important distinctions:**
 
-The skill follows a repeating planning cycle:
+- **Formula progress is reactive.** The percentage updates when linked daily steps are completed.
+- **Red Status labels are not reactive.** Changing Status to `逾期待办` requires a user or separately configured authorized process. A Formula can display a red overdue *message* without editing Status.
+- A weekly view filtered by `本周重点=true` relies on that checkbox being maintained; it is not automatically tied to Monday without a scheduler.
+- A monthly view filtered only by `进度追踪=true` contains **all tracked tasks**, not just this month. The Skill explains a more accurate month-scoped enhancement but does not claim it is installed.
+- The two sample pages are **copyable rows**, not necessarily native templates in Notion's `New ▼` dropdown.
+- **No automatic AI task splitting is activated in v2.**
 
-**Monthly Goals → Weekly Tasks → Daily Actions → Progress Tracking → Weekly Review → Monthly Review**
+## Repository layout
 
-### Daily Planning
+| File / folder | Description |
+|---|---|
+| [`SKILL.md`](SKILL.md) | Main agent skill: triggers, safety, planning & execution |
+| [`QUICKSTART.zh-CN.md`](QUICKSTART.zh-CN.md) | Chinese setup and everyday usage |
+| [`references/`](references/) | Data schema, formulas, views, migration, overdue/automation behavior |
+| [`examples/config.example.yaml`](examples/config.example.yaml) | Public placeholder config — create a private `config.local.yaml` |
+| [`examples/automation_prompt.example.md`](examples/automation_prompt.example.md) | Optional scheduled-review prompt |
+| [`notion_tasks_template.csv`](notion_tasks_template.csv) | Basic CSV template (backward compatible) |
+| [`notion_tasks_template_v2.csv`](notion_tasks_template_v2.csv) | Extended CSV example (does **not** create advanced Notion properties) |
+| [`scripts/planner_logic.py`](scripts/planner_logic.py) | Pure Python helper for offline date/rollover logic (no Notion API) |
+| [`scripts/validate_skill.py`](scripts/validate_skill.py) | Verify package structure and local documentation |
+| [`tests/`](tests/) | Offline tests for logic; no real Notion data involved |
+| [`CHANGELOG.md`](CHANGELOG.md) | Release notes and v1 → v2 delta |
+| [`references/GITHUB_RELEASE.md`](references/GITHUB_RELEASE.md) | Step-by-step upgrade of the existing GitHub repository |
+| [`LICENSE`](LICENSE) | MIT license preserved from v1 |
 
-Break weekly tasks into realistic daily actions based on available time, urgency, and priorities.
+## Quick start
 
-### Weekly Planning
+1. Download the repo or the Skill zip. Load `SKILL.md` in an assistant that supports Agent Skills or reusable instructions.
+2. Connect **your own Notion** through a supported integration, and authorize only the requested database.
+3. Read [`QUICKSTART.zh-CN.md`](QUICKSTART.zh-CN.md) and map the columns; do not blindly overwrite an existing task database.
+4. Use the existing database and views. For complex tasks, create daily steps linked by `所属进度` to the parent task; set the parent's `进度追踪=true`.
+5. If you want scheduled weekly rollover, **explicitly enable** an independent scheduled task. The Skill file alone does not schedule anything.
+6. Before public GitHub upload, ensure local/private configs and real task data are excluded.
 
-Review unfinished work, identify important deadlines, and distribute tasks across the coming week.
+## Verify the skill locally
 
-### Monthly Planning
+No third-party Python packages are needed for the bundled offline tests:
 
-Set broader goals, monitor progress, and adjust priorities based on actual results.
+```bash
+python3 scripts/validate_skill.py
+python3 -m unittest discover -s tests -v
+```
 
-### Progress Reviews
+The tests check **the reference logic**, not whether your Notion connector can create or update particular view/Formula APIs.
 
-Use the task database's actual Status or Checkbox values to determine completion. Do not assume that a task has been completed based only on its title or scheduled date.
+## Compatibility and limitations
 
-## Design Principles
+The data model uses Notion Status, Checkbox, Date, Formula, Rollup, and a **two-way self Relation**. Formula syntax and view DSL may depend on your Notion workspace and integration. CSV imports do not create formula properties, Relations, Rollups, Views, real database templates, or automatic schedulers. Read the [migration guide](references/MIGRATION_V1_TO_V2.md) before modifying a production database.
 
-- **One Database:** Keep daily, weekly, and monthly plans in a single task database.
-- **Three Categories:** Daily Plan → Weekly Plan → Monthly Plan.
-- **Clear Priorities:** Use P0 for critical tasks and P3 for optional tasks.
-- **Accurate Tracking:** Determine completion from actual task properties.
-- **Preserve History:** Keep previous records when updating future plans.
-- **Avoid Duplicates:** Check existing tasks before creating new ones.
-- **User Control:** Do not modify or share private Notion content without authorization.
-- **Realistic Scheduling:** Adjust workloads according to deadlines and available time.
+## Original v1 repository & licensing
 
-## Limitations
+This v2 pack builds on the original [`hyjcandoit/ai-notion-daily-weekly-monthly-planner`](https://github.com/hyjcandoit/ai-notion-daily-weekly-monthly-planner) repository and preserves its file naming and MIT License. It is prepared for the existing repository but **has not been pushed to GitHub automatically**.
 
-- This is an **AI planning skill**, not an independently hosted application.
-- It requires a compatible AI assistant to interpret and follow the instructions.
-- Direct Notion updates require a supported Notion integration and appropriate permissions.
-- The skill cannot monitor task changes continuously by itself.
-- Automated scheduled reviews require an external scheduling tool.
-- The initial version has not yet been validated through a formal external user study.
+## Sample prompts
 
-## Roadmap
+```text
+使用 Notion Daily · Weekly · Monthly Planner v2。
+请先读取我现有的任务数据库与三个视图。
+帮我把“完成课程 Week 5”作为一个大型任务，拆成课程学习和 PSet 提交两条每日步骤，
+建立所属进度关联，并确认本周/本月进度条能够联动。
+不要重复创建任务，不要把未完成的事项标记成已完成。
+```
 
-- [ ] Add a complete English version of `SKILL.md`.
-- [ ] Collect feedback from real users.
-- [ ] Improve task prioritization and workload distribution.
-- [ ] Expand setup examples and documentation.
-- [ ] Improve task rollover and progress review guidance.
-
-## Contributing
-
-Feedback, suggestions, and contributions are welcome.
-
-If you encounter an issue or have an idea for improvement, feel free to open a GitHub Issue.
-
-Please remove personal information, private Notion URLs, and sensitive data before sharing examples.
-
-## License
-
-This project is licensed under the **MIT License**.
-
-See the [LICENSE](LICENSE) file for details.
+```text
+使用 v2 Skill，检查本周和上月遗留任务；保留原截止日。
+把需要继续推进的追踪任务纳入本周重点，核对逾期提示和排序。
+若没有授权的定时服务，不要假装已经设置自动更新。
+```

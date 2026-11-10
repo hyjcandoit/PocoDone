@@ -1,0 +1,86 @@
+{
+  "name": "daily-weekly-monthly-notion-planner",
+  "version": "2.0.0",
+  "package_created": "2026-11-10",
+  "source_repository": "https://github.com/hyjcandoit/ai-notion-daily-weekly-monthly-planner",
+  "contains_private_workspace_ids": false,
+  "github_push_performed": false,
+  "files": {
+    ".gitignore": {
+      "sha256": "e792b9037621ad81346c6cf3b96c5157c7854660a61f727bcba4896ca14748fd",
+      "bytes": 190
+    },
+    "CHANGELOG.md": {
+      "sha256": "17d37627d899b233bd998728c5b4765c307a8ee22b5261848fbd5d5fdb25c1ae",
+      "bytes": 2029
+    },
+    "LICENSE": {
+      "sha256": "66467a34929539ec4f5ba2cce26a51d3933a38ca358bdce154f350efee10291f",
+      "bytes": 1067
+    },
+    "QUICKSTART.zh-CN.md": {
+      "sha256": "3e558e65f54931e2439b8d86b448683517e6e708fdf228bbd75dd28cf5a6794a",
+      "bytes": 5129
+    },
+    "README.md": {
+      "sha256": "ed75f8815b5a1dccebfd75af7a60b14925a71a30f243b76cfc48155b8f568254",
+      "bytes": 7062
+    },
+    "SKILL.md": {
+      "sha256": "2b8a584e7ed22d223737c1768fbe61a65f004e57c8da12e2f304e1347166d0f5",
+      "bytes": 13134
+    },
+    "examples/automation_prompt.example.md": {
+      "sha256": "c832e50a9db8b6290d450f812e4584b79ddfd3760634ec08f836bd83fd988e03",
+      "bytes": 1493
+    },
+    "examples/config.example.yaml": {
+      "sha256": "9c94d3fb4d7996eea54c7d355deaaf3517b69f34b29002da64d5cf58876ec46b",
+      "bytes": 911
+    },
+    "notion_tasks_template.csv": {
+      "sha256": "21da66bc82d95a24d0a67cf1e4e5a7c2c97323ef4900181fa994cc4f39e097f9",
+      "bytes": 436
+    },
+    "notion_tasks_template_v2.csv": {
+      "sha256": "97864412966079a611ecce8ecc383d4d649785bc98615598887cfa5e11c3c8c7",
+      "bytes": 450
+    },
+    "references/AUTOMATION_AND_LIMITATIONS.md": {
+      "sha256": "43d76d47e42165714da6903de49daffd60d83c2b28743cea5980eb32fb41fb02",
+      "bytes": 5752
+    },
+    "references/DATABASE_SCHEMA.md": {
+      "sha256": "fe61adc5e1fad86ed5debaee1fb3c41fb2890e7335365788c9ab5881e0c0c8d9",
+      "bytes": 4052
+    },
+    "references/GITHUB_RELEASE.md": {
+      "sha256": "583764053cd7eaf40dfb2e9ac328bbc03264641c35dca7bcfa486752197be5a7",
+      "bytes": 1721
+    },
+    "references/MIGRATION_V1_TO_V2.md": {
+      "sha256": "12c9a5eacd7fc50c0376dd1b68bc8ddff5ca91da4a7c39e0f4f6593af67f9aaa",
+      "bytes": 3021
+    },
+    "references/TASK_WORKFLOWS.md": {
+      "sha256": "e129b2fc0c2b2874c24b36f31644d0049a0cd271c25f165224a8fe594c527be8",
+      "bytes": 5162
+    },
+    "references/VIEWS_AND_FORMULAS.md": {
+      "sha256": "0872e22fd686fe1942f2adc2c6565f8b1d27bc783a8deb0de91ce1f87824819d",
+      "bytes": 5124
+    },
+    "scripts/planner_logic.py": {
+      "sha256": "830996acddc714d880a27eb1ae581783e3811bb59190071e407db8dbf965db7d",
+      "bytes": 3529
+    },
+    "scripts/validate_skill.py": {
+      "sha256": "cd2ace26307aee9c67289a567495a5880c592b8ca4e3292409819f158127404a",
+      "bytes": 2758
+    },
+    "tests/test_planner_logic.py": {
+      "sha256": "37db3d325c878a1c92db336e24ef18716cf26c0fa868f1347beb274149986500",
+      "bytes": 2765
+    }
+  }
+}
