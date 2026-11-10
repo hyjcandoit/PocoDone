@@ -106,22 +106,25 @@ The tests check **the reference logic**, not whether your Notion connector can c
 
 The data model uses Notion Status, Checkbox, Date, Formula, Rollup, and a **two-way self Relation**. Formula syntax and view DSL may depend on your Notion workspace and integration. CSV imports do not create formula properties, Relations, Rollups, Views, real database templates, or automatic schedulers. Read the [migration guide](references/MIGRATION_V1_TO_V2.md) before modifying a production database.
 
-## Original v1 repository & licensing
+## Project History & Licensing
 
-This v2.1 pack builds on the original [`hyjcandoit/ai-notion-daily-weekly-monthly-planner`](https://github.com/hyjcandoit/ai-notion-daily-weekly-monthly-planner) repository and preserves its file naming and MIT License. It is prepared for the existing repository but **has not been pushed to GitHub automatically**.
+This project was originally released as v0.1.0 and has since evolved into v2.0.0 and v2.1.0.
+Version 2.1.0 introduces AI-assisted task decomposition, scheduled workflow support, and additional testing documentation.
+The project is open-source under the MIT License.
+For previous versions and release history, see the [GitHub Releases](https://github.com/hyjcandoit/ai-notion-daily-weekly-monthly-planner/releases) page.
 
 ## Sample prompts
 
 ```text
-使用 Notion Daily · Weekly · Monthly Planner v2。
-请先读取我现有的任务数据库与三个视图。
-帮我把“完成课程 Week 5”作为一个大型任务，拆成课程学习和 PSet 提交两条每日步骤，
-建立所属进度关联，并确认本周/本月进度条能够联动。
-不要重复创建任务，不要把未完成的事项标记成已完成。
+Use Notion Daily · Weekly · Monthly Planner v2.1.
+First, read my existing task database and its three views.
+Set up "Complete Course Week 5" as a large task and split it into two daily steps: course study and PSet submission.
+Link them to the parent task through the 所属进度 relation, and confirm that the weekly and monthly progress bars update together.
+Do not create duplicate tasks, and do not mark unfinished items as completed.
 ```
 
 ```text
-使用 v2 Skill，检查本周和上月遗留任务；保留原截止日。
-把需要继续推进的追踪任务纳入本周重点，核对逾期提示和排序。
-若没有授权的定时服务，不要假装已经设置自动更新。
+Use the v2.1 Skill to check this week's tasks and anything left over from last month. Keep their original due dates.
+Add the tracked tasks that still need work to this week's focus (本周重点), then check the overdue alerts and the sort order.
+If there's no authorized scheduled service, don't claim that automatic updates have been set up.
 ```
